@@ -14,6 +14,9 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /app/publish .
 
+# Папка для ключей шифрования cookie входа (в docker-compose к ней подключается том)
+RUN mkdir -p /keys && chown $APP_UID /keys
+
 # Образы .NET по умолчанию слушают порт 8080 и умеют работать без root
 EXPOSE 8080
 USER $APP_UID
