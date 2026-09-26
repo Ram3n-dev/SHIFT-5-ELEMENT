@@ -1,0 +1,22 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      # Языковая модель выключена по умолчанию — объяснения строятся по шаблонам.
+      Llm__Enabled: ${LLM_ENABLED:-false}
+      Llm__BaseUrl: ${LLM_BASE_URL:-http://host.docker.internal:11434/v1}
+      Llm__Model: ${LLM_MODEL:-}
+      Llm__ApiKey: ${LLM_API_KEY:-}
+    extra_hosts:
+      # Чтобы контейнер мог достучаться до Ollama, запущенной на этом же компьютере
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "${APP_PORT:-8080}:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

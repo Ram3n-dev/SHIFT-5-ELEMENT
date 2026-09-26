@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="LimitPlus.Api/LimitPlus.Api.csproj" />
+  <Project Path="LimitPlus.Tests/LimitPlus.Tests.csproj" />
+</Solution>

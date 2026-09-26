@@ -1,0 +1,17 @@
+# Node / Vite
+node_modules/
+dist/
+
+# .NET
+bin/
+obj/
+*.user
+.vs/
+
+# IDE
+.idea/
+.vscode/
+
+# Секреты и локальные настройки
+.env
+.env.local

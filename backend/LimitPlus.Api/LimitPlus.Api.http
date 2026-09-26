@@ -1,0 +1,53 @@
+# Примеры запросов к API. Открываются в Visual Studio, Rider или VS Code (расширение REST Client).
+# Даты указаны для «сегодня» = 2026-09-26, поэтому до стипендии 10 дней.
+
+@host = http://localhost:5080
+
+### Дневной лимит: ожидаем 340 ₽ в день
+POST {{host}}/api/calculate
+Content-Type: application/json
+
+{
+  "accounts": [
+    { "id": "card-1", "name": "Карта", "type": "card", "balance": 4200, "include_in_spending": true },
+    { "id": "cash-1", "name": "Наличные", "type": "cash", "balance": 800, "include_in_spending": true },
+    { "id": "savings-1", "name": "Накопления", "type": "savings", "balance": 0, "include_in_spending": false }
+  ],
+  "stipend_date": "2026-10-06",
+  "manual_mandatory_expenses": 1200,
+  "reserve": 400,
+  "recurring_expenses": [],
+  "today": "2026-09-26"
+}
+
+### Проверка покупки: наушники за 650 ₽ → 275 ₽ в день
+POST {{host}}/api/purchase-check
+Content-Type: application/json
+
+{
+  "total_balance": 5000,
+  "stipend_date": "2026-10-06",
+  "mandatory_expenses": 1200,
+  "reserve": 400,
+  "purchase_name": "Наушники",
+  "purchase_amount": 650,
+  "today": "2026-09-26"
+}
+
+### Объяснение: «Почему такой лимит?»
+POST {{host}}/api/explain
+Content-Type: application/json
+
+{
+  "topic": "why_limit",
+  "days_until_stipend": 10,
+  "total_balance": 5000,
+  "mandatory_expenses": 1200,
+  "reserve": 400,
+  "free_money": 3400,
+  "daily_limit": 340,
+  "status": "safe"
+}
+
+### Проверка, что сервер жив
+GET {{host}}/api/health
