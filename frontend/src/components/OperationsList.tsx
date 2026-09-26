@@ -1,114 +1,64 @@
-import { useState } from 'react'
-import { ArrowDownLeft, ArrowUpRight } from 'lucide-react'
-import { Card, EmptyState } from './ui'
-import { formatDate, formatSignedRub } from '../lib/format'
-import type { Account, Operation } from '../types'
+import { Repeat, Trash2 } from 'lucide-react'
+import { categoryIcon } from '../lib/categories'
+import { formatDayTitle, formatRub, formatSignedRub } from '../lib/format'
+import type { Operation } from '../lib/types'
 
-type Filter = 'all' | 'expense' | 'income'
-
-const FILTERS: { value: Filter; label: string }[] = [
-  { value: 'all', label: 'Все' },
-  { value: 'expense', label: 'Расходы' },
-  { value: 'income', label: 'Доходы' },
-]
-
-const PAGE_SIZE = 30
-
-export default function OperationsList({ operations, accounts }: { operations: Operation[]; accounts: Account[] }) {
-  const [filter, setFilter] = useState<Filter>('all')
-  const [showAll, setShowAll] = useState(false)
-
-  const accountNames = new Map(accounts.map((account) => [account.id, account.name]))
-  const filtered = operations
-    .filter((operation) => filter === 'all' || operation.type === filter)
-    .sort((a, b) => b.date.localeCompare(a.date))
-  const visible = showAll ? filtered : filtered.slice(0, PAGE_SIZE)
+/** Операции по дням: «Сегодня», «Вчера», «24 сентября». Итог дня — только траты. */
+export default function OperationsList({ operations, onDelete }: { operations: Operation[]; onDelete: (operation: Operation) => void }) {
+  const groups = new Map<string, Operation[]>()
+  for (const operation of operations) {
+    const list = groups.get(operation.date) ?? []
+    list.push(operation)
+    groups.set(operation.date, list)
+  }
+  const dates = [...groups.keys()].sort((a, b) => b.localeCompare(a))
 
   return (
-    <Card>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-base font-semibold">История операций</h2>
-        <div role="tablist" aria-label="Фильтр операций" className="flex gap-1 rounded-xl bg-slate-100 p-1">
-          {FILTERS.map((item) => (
-            <button
-              key={item.value}
-              type="button"
-              role="tab"
-              aria-selected={filter === item.value}
-              onClick={() => setFilter(item.value)}
-              className={`cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-                filter === item.value ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {filtered.length === 0 ? (
-        <div className="mt-4">
-          <EmptyState
-            title={operations.length === 0 ? 'Операций пока нет' : 'Таких операций нет'}
-            text={operations.length === 0 ? 'Добавьте расход вручную или импортируйте учебную выписку.' : undefined}
-          />
-        </div>
-      ) : (
-        <ul className="mt-2 divide-y divide-slate-100">
-          {visible.map((operation) => {
-            const income = operation.type === 'income'
-            return (
-              <li key={operation.id} className="flex items-center gap-3 py-3">
-                <span
-                  className={`flex size-10 shrink-0 items-center justify-center rounded-2xl ${
-                    income ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600'
-                  }`}
-                >
-                  {income ? (
-                    <ArrowDownLeft className="size-5" aria-label="Доход" />
-                  ) : (
-                    <ArrowUpRight className="size-5" aria-label="Расход" />
-                  )}
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="break-words font-medium">{operation.description || operation.category}</p>
-                  <p className="text-xs text-slate-500">
-                    {operation.category} · {accountNames.get(operation.account_id) ?? 'удалённый счёт'} ·{' '}
-                    {formatDate(operation.date)}
-                  </p>
-                  {(operation.is_mandatory || operation.is_recurring) && (
-                    <p className="mt-1 flex gap-1">
-                      {operation.is_mandatory && (
-                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] text-slate-600">
-                          обязательная
-                        </span>
-                      )}
-                      {operation.is_recurring && (
-                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] text-slate-600">
-                          регулярная
-                        </span>
-                      )}
-                    </p>
-                  )}
-                </div>
-                <p className={`font-semibold tabular-nums ${income ? 'text-emerald-700' : 'text-slate-900'}`}>
-                  {formatSignedRub(income ? operation.amount : -operation.amount)}
-                </p>
-              </li>
-            )
-          })}
-        </ul>
-      )}
-
-      {!showAll && filtered.length > PAGE_SIZE && (
-        <button
-          type="button"
-          onClick={() => setShowAll(true)}
-          className="mt-3 w-full cursor-pointer rounded-xl py-2 text-sm font-medium text-teal-700 hover:bg-teal-50"
-        >
-          Показать все ({filtered.length})
-        </button>
-      )}
-    </Card>
+    <div className="flex flex-col gap-4">
+      {dates.map((date) => {
+        const items = groups.get(date)!
+        const spent = items.filter((item) => item.type === 'expense').reduce((sum, item) => sum + item.amount, 0)
+        return (
+          <section key={date} className="flex flex-col gap-2">
+            <div className="flex items-baseline justify-between px-1">
+              <h2 className="font-semibold text-ink">{formatDayTitle(date)}</h2>
+              {spent > 0 && <span className="text-sm text-muted">{formatRub(-spent)}</span>}
+            </div>
+            <ul className="overflow-hidden rounded-3xl bg-card">
+              {items.map((item) => {
+                const Icon = categoryIcon(item.category)
+                return (
+                  <li key={item.id} className="flex items-center gap-3 border-b border-line px-4 py-3 last:border-b-0">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-chip text-ink" aria-hidden="true">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-medium text-ink">{item.description}</p>
+                      <p className="flex items-center gap-1 truncate text-sm text-muted">
+                        {item.category}
+                        {item.account_name && ` · ${item.account_name}`}
+                        {item.is_mandatory && ' · обязательная'}
+                        {item.is_recurring && <Repeat className="h-3.5 w-3.5 shrink-0" aria-label="регулярный платёж" />}
+                      </p>
+                    </div>
+                    <span className={`shrink-0 font-semibold ${item.type === 'income' ? 'text-ok' : 'text-ink'}`}>
+                      {formatSignedRub(item.type === 'income' ? item.amount : -item.amount)}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => onDelete(item)}
+                      aria-label={`Удалить: ${item.description}`}
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted transition hover:bg-chip hover:text-bad"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          </section>
+        )
+      })}
+    </div>
   )
 }

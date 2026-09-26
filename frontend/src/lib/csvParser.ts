@@ -1,4 +1,4 @@
-// Разбор учебной CSV-выписки. Работает только в браузере: файл никуда не отправляется.
+// Разбор учебной CSV-выписки. Файл читается и разбирается в браузере — на сервер уходят только готовые операции.
 //
 // Формат:
 // date,description,amount,category
@@ -7,7 +7,7 @@
 //
 // amount > 0 — доход, amount < 0 — расход. Разделитель — запятая или точка с запятой.
 
-import type { OperationType } from '../types'
+import type { OperationType } from './types'
 import { OTHER_CATEGORY, matchCategory } from './categories'
 import { isValidISODate, parseAmount } from './format'
 

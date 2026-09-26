@@ -1,16 +1,42 @@
 services:
+  # База данных. Порт открыт только на этом компьютере — для запуска backend без Docker и для pgAdmin.
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: limitplus
+      POSTGRES_USER: limitplus
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-limitplus}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:${DB_PORT:-5433}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U limitplus -d limitplus"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
   backend:
     build: ./backend
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      # Языковая модель выключена по умолчанию — объяснения строятся по шаблонам.
+      # Backend стоит за nginx: адрес и схему для возврата из Google берём из заголовков прокси.
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      ConnectionStrings__Default: Host=db;Port=5432;Database=limitplus;Username=limitplus;Password=${DB_PASSWORD:-limitplus}
+      DataProtection__KeysPath: /keys
+      Auth__DemoLogin: ${DEMO_LOGIN:-true}
+      Google__ClientId: ${GOOGLE_CLIENT_ID:-}
+      Google__ClientSecret: ${GOOGLE_CLIENT_SECRET:-}
       Llm__Enabled: ${LLM_ENABLED:-false}
-      Llm__BaseUrl: ${LLM_BASE_URL:-http://host.docker.internal:11434/v1}
-      Llm__Model: ${LLM_MODEL:-}
+      Llm__BaseUrl: ${LLM_BASE_URL:-https://routerai.ru/api/v1}
+      Llm__Model: ${LLM_MODEL:-deepseek/deepseek-v4-pro-0813}
       Llm__ApiKey: ${LLM_API_KEY:-}
-    extra_hosts:
-      # Чтобы контейнер мог достучаться до Ollama, запущенной на этом же компьютере
-      - "host.docker.internal:host-gateway"
+    volumes:
+      - keys:/keys
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
 
   frontend:
@@ -20,3 +46,7 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+
+volumes:
+  db-data:
+  keys:

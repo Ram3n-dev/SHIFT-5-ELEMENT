@@ -7,4 +7,17 @@
     <RootNamespace>LimitPlus.Api</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- Звёздочка — последняя версия в этой ветке: 2.1.x, 9.x, 10.0.x -->
+    <PackageReference Include="Dapper" Version="2.1.*" />
+    <PackageReference Include="Npgsql" Version="9.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="10.0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Схема базы и цены регионов лежат рядом с программой -->
+    <None Update="Data\schema.sql" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Data\regional-prices.csv" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

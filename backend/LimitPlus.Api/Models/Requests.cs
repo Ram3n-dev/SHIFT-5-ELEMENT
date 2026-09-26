@@ -1,122 +1,230 @@
 using System.ComponentModel.DataAnnotations;
+using LimitPlus.Api.Logic;
 
 namespace LimitPlus.Api.Models;
 
-// Все суммы — в рублях. Атрибуты проверяют данные ещё до расчёта:
+// Тела запросов. Атрибуты проверяют данные ещё до контроллера:
 // при ошибке ASP.NET Core сам вернёт 400 с описанием проблемы.
 
-public class AccountInput
+public class OnboardingRequest
 {
-    [Required(ErrorMessage = "У счёта должен быть id")]
-    [StringLength(64)]
-    public string Id { get; set; } = "";
+    /// <summary>Согласие на обработку персональных данных — без него онбординг не завершить.</summary>
+    public bool PdConsent { get; set; }
 
+    [StringLength(60)]
+    public string? City { get; set; }
+
+    [StringLength(4)]
+    public string? RegionCode { get; set; }
+
+    [Range(0d, 1_000_000d, ErrorMessage = "Размер стипендии вне допустимого диапазона")]
+    public decimal StipendAmount { get; set; }
+
+    [Range(1, 31, ErrorMessage = "Число стипендии — от 1 до 31")]
+    public int StipendDay { get; set; } = 25;
+
+    [Range(-10_000_000d, 10_000_000d, ErrorMessage = "Баланс карты вне допустимого диапазона")]
+    public decimal Card { get; set; }
+
+    [Range(0d, 10_000_000d, ErrorMessage = "Наличные не могут быть отрицательными")]
+    public decimal Cash { get; set; }
+
+    [Range(0d, 10_000_000d, ErrorMessage = "Накопления не могут быть отрицательными")]
+    public decimal Savings { get; set; }
+
+    [Range(0d, 10_000_000d, ErrorMessage = "Обязательные траты не могут быть отрицательными")]
+    public decimal MandatoryMonthly { get; set; }
+
+    [Range(0d, 10_000_000d, ErrorMessage = "Резерв не может быть отрицательным")]
+    public decimal Reserve { get; set; }
+
+    public int LimitPeriodDays { get; set; } = 1;
+}
+
+/// <summary>Изменение настроек профиля. Поля, которые не пришли (null), не меняются.</summary>
+public class ProfileUpdateRequest
+{
+    [StringLength(60)]
+    public string? City { get; set; }
+
+    [StringLength(4)]
+    public string? RegionCode { get; set; }
+
+    [Range(0d, 1_000_000d, ErrorMessage = "Размер стипендии вне допустимого диапазона")]
+    public decimal? StipendAmount { get; set; }
+
+    [Range(1, 31, ErrorMessage = "Число стипендии — от 1 до 31")]
+    public int? StipendDay { get; set; }
+
+    [Range(0d, 10_000_000d, ErrorMessage = "Обязательные траты не могут быть отрицательными")]
+    public decimal? MandatoryMonthly { get; set; }
+
+    [Range(0d, 10_000_000d, ErrorMessage = "Обязательные траты не могут быть отрицательными")]
+    public decimal? MandatoryLeft { get; set; }
+
+    [Range(0d, 10_000_000d, ErrorMessage = "Резерв не может быть отрицательным")]
+    public decimal? Reserve { get; set; }
+
+    public int? LimitPeriodDays { get; set; }
+
+    [RegularExpression("^(system|light|dark)$", ErrorMessage = "Тема: system, light или dark")]
+    public string? Theme { get; set; }
+
+    public bool? NotificationsEnabled { get; set; }
+}
+
+public class AccountRequest
+{
+    [Required(ErrorMessage = "Укажи название счёта")]
     [StringLength(40, ErrorMessage = "Название счёта — не длиннее 40 символов")]
     public string Name { get; set; } = "";
 
     public AccountType Type { get; set; }
 
-    [Range(-10_000_000d, 10_000_000d, ErrorMessage = "Баланс счёта вне допустимого диапазона")]
+    [Range(-10_000_000d, 10_000_000d, ErrorMessage = "Баланс вне допустимого диапазона")]
     public decimal Balance { get; set; }
 
-    /// <summary>Входит ли счёт в деньги на повседневные траты.</summary>
-    public bool IncludeInSpending { get; set; }
+    public bool IncludeInSpending { get; set; } = true;
 }
 
-public class RecurringExpenseInput
+public class OperationRequest
 {
-    [StringLength(64)]
-    public string Id { get; set; } = "";
+    public OperationType Type { get; set; }
 
-    [StringLength(60, ErrorMessage = "Название регулярной траты — не длиннее 60 символов")]
-    public string Name { get; set; } = "";
-
-    [Range(0d, 10_000_000d, ErrorMessage = "Сумма регулярной траты не может быть отрицательной")]
+    [Range(0.01d, 10_000_000d, ErrorMessage = "Сумма должна быть больше нуля")]
     public decimal Amount { get; set; }
 
+    [Required(ErrorMessage = "Выбери категорию")]
     [StringLength(40)]
     public string Category { get; set; } = "";
+
+    [StringLength(80, ErrorMessage = "Описание — не длиннее 80 символов")]
+    public string Description { get; set; } = "";
+
+    public Guid? AccountId { get; set; }
+
+    public DateOnly Date { get; set; }
+
+    /// <summary>Обязательная трата (общежитие, проезд): уменьшает план обязательных трат, а не дневной лимит.</summary>
+    public bool IsMandatory { get; set; }
+}
+
+public class ImportRequest
+{
+    public Guid AccountId { get; set; }
+
+    [MinLength(1, ErrorMessage = "В файле нет операций")]
+    [MaxLength(1000, ErrorMessage = "За один раз можно импортировать не больше 1000 операций")]
+    public List<OperationRequest> Operations { get; set; } = [];
+
+    /// <summary>
+    /// true — выписка про прошлое, а баланс счёта указан «сейчас» и уже её учитывает: балансы не меняем.
+    /// false — зачислить и списать суммы, как будто операции прошли только что.
+    /// </summary>
+    public bool BalanceIncludesOperations { get; set; } = true;
+}
+
+public class RecurringRequest
+{
+    [Required(ErrorMessage = "Укажи название")]
+    [StringLength(60)]
+    public string Name { get; set; } = "";
+
+    [Range(0d, 10_000_000d, ErrorMessage = "Сумма не может быть отрицательной")]
+    public decimal Amount { get; set; }
+
+    [Required]
+    [StringLength(40)]
+    public string Category { get; set; } = "Другое";
 
     public DateOnly NextDate { get; set; }
 
     public bool Enabled { get; set; } = true;
 }
 
-public class CalculateRequest
+public class AccountChoiceRequest
 {
-    [MaxLength(20, ErrorMessage = "Слишком много счетов")]
-    public List<AccountInput> Accounts { get; set; } = [];
-
-    public DateOnly StipendDate { get; set; }
-
-    [Range(0d, 10_000_000d, ErrorMessage = "Обязательные траты не могут быть отрицательными")]
-    public decimal ManualMandatoryExpenses { get; set; }
-
-    [Range(0d, 10_000_000d, ErrorMessage = "Резерв не может быть отрицательным")]
-    public decimal Reserve { get; set; }
-
-    [MaxLength(50, ErrorMessage = "Слишком много регулярных трат")]
-    public List<RecurringExpenseInput> RecurringExpenses { get; set; } = [];
-
-    /// <summary>
-    /// Сегодняшняя дата пользователя. Её передаёт браузер, потому что сервер
-    /// может работать в другом часовом поясе. Если не передана — берём дату сервера.
-    /// </summary>
-    public DateOnly? Today { get; set; }
+    public Guid? AccountId { get; set; }
 }
 
-public class PurchaseCheckRequest
+public class PurchaseRequest
 {
-    [Range(-10_000_000d, 10_000_000d, ErrorMessage = "Баланс вне допустимого диапазона")]
-    public decimal TotalBalance { get; set; }
-
-    public DateOnly StipendDate { get; set; }
-
-    [Range(0d, 10_000_000d, ErrorMessage = "Обязательные траты не могут быть отрицательными")]
-    public decimal MandatoryExpenses { get; set; }
-
-    [Range(0d, 10_000_000d, ErrorMessage = "Резерв не может быть отрицательным")]
-    public decimal Reserve { get; set; }
-
     [StringLength(60, ErrorMessage = "Название покупки — не длиннее 60 символов")]
-    public string PurchaseName { get; set; } = "";
+    public string Name { get; set; } = "";
 
     [Range(0d, 10_000_000d, MinimumIsExclusive = true, ErrorMessage = "Сумма покупки должна быть больше нуля")]
-    public decimal PurchaseAmount { get; set; }
-
-    public DateOnly? Today { get; set; }
+    public decimal Amount { get; set; }
 }
 
-/// <summary>
-/// Уже рассчитанные числа, которые нужно объяснить. Все поля, кроме темы, необязательные:
-/// если для темы не хватает чисел, ответ — «Данных недостаточно для точного объяснения».
-/// </summary>
-public class ExplainRequest
+public class CashbackOptionInput
 {
-    public ExplainTopic Topic { get; set; }
+    [Required(ErrorMessage = "Укажи категорию кэшбэка")]
+    [StringLength(60)]
+    public string Name { get; set; } = "";
 
-    public int? DaysUntilStipend { get; set; }
+    [Range(0.1d, 100d, ErrorMessage = "Процент кэшбэка — от 0,1 до 100")]
+    public decimal Percent { get; set; }
 
-    public decimal? TotalBalance { get; set; }
+    /// <summary>Наша категория трат. Не указана — угадаем по названию.</summary>
+    [StringLength(40)]
+    public string? Category { get; set; }
+}
 
-    public decimal? MandatoryExpenses { get; set; }
+public class CashbackOptionsRequest
+{
+    [MaxLength(20, ErrorMessage = "Не больше 20 вариантов кэшбэка")]
+    public List<CashbackOptionInput> Options { get; set; } = [];
+}
 
-    public decimal? Reserve { get; set; }
+public class CashbackChooseRequest
+{
+    [MaxLength(20)]
+    public List<Guid> OptionIds { get; set; } = [];
+}
 
-    public decimal? FreeMoney { get; set; }
+public class PartnerOfferRequest
+{
+    [Required(ErrorMessage = "Укажи магазин")]
+    [StringLength(60)]
+    public string Merchant { get; set; } = "";
 
-    public decimal? DailyLimit { get; set; }
+    [Range(0.1d, 100d, ErrorMessage = "Процент кэшбэка — от 0,1 до 100")]
+    public decimal Percent { get; set; }
 
-    public BudgetStatus? Status { get; set; }
+    [StringLength(40)]
+    public string? Category { get; set; }
 
-    [StringLength(60, ErrorMessage = "Название покупки — не длиннее 60 символов")]
-    public string? PurchaseName { get; set; }
+    public DateOnly? ValidUntil { get; set; }
+}
 
-    public decimal? PurchaseAmount { get; set; }
+public class ChatRequest
+{
+    [StringLength(500, ErrorMessage = "Вопрос — не длиннее 500 символов")]
+    public string Message { get; set; } = "";
 
-    public decimal? DailyLimitAfter { get; set; }
+    /// <summary>Id готовой подсказки. Если есть — Message можно не заполнять.</summary>
+    [StringLength(40)]
+    public string? PromptId { get; set; }
+}
 
-    public decimal? LimitChange { get; set; }
+public class ConsentRequest
+{
+    [RegularExpression("^(cookies|personal_data)$")]
+    public string Kind { get; set; } = "cookies";
 
-    public PurchaseDecision? Decision { get; set; }
+    [Required]
+    [StringLength(60)]
+    public string Value { get; set; } = "";
+
+    [Required]
+    [StringLength(10)]
+    public string Version { get; set; } = "v1";
+}
+
+public class EventRequest
+{
+    [Required]
+    [StringLength(60)]
+    [RegularExpression("^[a-z0-9_:/-]+$")]
+    public string Name { get; set; } = "";
 }
