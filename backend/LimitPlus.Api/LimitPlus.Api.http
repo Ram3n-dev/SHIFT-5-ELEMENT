@@ -1,0 +1,134 @@
+# Примеры запросов к API. Открываются в Visual Studio, Rider или VS Code (расширение REST Client).
+# Порядок: демо-вход → онбординг → остальные запросы. Cookie входа (lp_auth) IDE запоминает сама.
+# Изменяющие запросы должны идти с заголовком X-Requested-With: limitplus — это защита от CSRF.
+
+@host = http://localhost:5080
+
+### Какие способы входа включены
+GET {{host}}/api/auth/config
+
+### Демо-вход без Google (создаёт временного пользователя на 7 дней)
+POST {{host}}/api/auth/demo
+X-Requested-With: limitplus
+
+### Ответы онбординга
+POST {{host}}/api/onboarding
+Content-Type: application/json
+X-Requested-With: limitplus
+
+{
+  "pd_consent": true,
+  "city": "Красноярск",
+  "region_code": "24",
+  "stipend_amount": 5000,
+  "stipend_day": 25,
+  "card": 4200,
+  "cash": 500,
+  "savings": 2000,
+  "mandatory_monthly": 2500,
+  "reserve": 500,
+  "limit_period_days": 1
+}
+
+### Профиль
+GET {{host}}/api/me
+
+### Главная: лимит, огонёк, стипендия, цены региона, кэшбэк, совет
+GET {{host}}/api/dashboard
+
+### Лимит на 3 дня вместо дня
+PUT {{host}}/api/profile
+Content-Type: application/json
+X-Requested-With: limitplus
+
+{ "limit_period_days": 3 }
+
+### Записать трату (account_id — из GET /api/accounts; можно null)
+POST {{host}}/api/operations
+Content-Type: application/json
+X-Requested-With: limitplus
+
+{
+  "type": "expense",
+  "amount": 350,
+  "category": "Кафе и доставка",
+  "description": "Кофе с другом",
+  "account_id": null,
+  "date": "2026-09-26",
+  "is_mandatory": false
+}
+
+### Операции за 90 дней
+GET {{host}}/api/operations
+
+### Счета
+GET {{host}}/api/accounts
+
+### Хватит ли денег на покупку
+POST {{host}}/api/purchase-check
+Content-Type: application/json
+X-Requested-With: limitplus
+
+{ "name": "Наушники", "amount": 2000 }
+
+### Анализ трат: сравнение с прошлым периодом, лишние траты, как дотянуть
+GET {{host}}/api/analytics
+
+### «Сегодня без трат» — отметка для огонька
+POST {{host}}/api/day/no-spend
+X-Requested-With: limitplus
+
+### Готовые вопросы Еноту
+GET {{host}}/api/ai/prompts
+
+### Вопрос Еноту по готовой подсказке
+POST {{host}}/api/ai/chat
+Content-Type: application/json
+X-Requested-With: limitplus
+
+{ "message": "", "prompt_id": "how_to_last" }
+
+### Свободный вопрос
+POST {{host}}/api/ai/chat
+Content-Type: application/json
+X-Requested-With: limitplus
+
+{ "message": "Можно купить кроссовки за 3000?", "prompt_id": null }
+
+### Категории кэшбэка на октябрь (как со скриншота) → подбор и объяснение
+PUT {{host}}/api/cashback/2026-10/options
+Content-Type: application/json
+X-Requested-With: limitplus
+
+{
+  "options": [
+    { "name": "Супермаркеты", "percent": 5, "category": null },
+    { "name": "Кафе и рестораны", "percent": 10, "category": null },
+    { "name": "Транспорт", "percent": 5, "category": null },
+    { "name": "Такси", "percent": 7, "category": null },
+    { "name": "Аптеки", "percent": 5, "category": null },
+    { "name": "Книги", "percent": 7, "category": null }
+  ]
+}
+
+### Подбор на месяц
+GET {{host}}/api/cashback/2026-10
+
+### Итоги кэшбэка за месяц
+GET {{host}}/api/cashback/2026-09/results
+
+### Партнёрское предложение с напоминанием о сроке
+POST {{host}}/api/partner-offers
+Content-Type: application/json
+X-Requested-With: limitplus
+
+{ "merchant": "Кофейня «Зерно»", "percent": 10, "category": null, "valid_until": "2026-10-15" }
+
+### Напоминания Енота, которые пора показать
+GET {{host}}/api/notifications
+
+### Регионы и города для онбординга
+GET {{host}}/api/regions
+
+### Проверка, что сервер жив
+GET {{host}}/api/health

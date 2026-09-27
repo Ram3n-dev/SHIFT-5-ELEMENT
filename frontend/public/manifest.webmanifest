@@ -1,0 +1,14 @@
+{
+  "name": "Енотономика — дотянем до стипендии",
+  "short_name": "Енотономика",
+  "description": "Лимит на день до стипендии, огонёк и подбор кэшбэка с Енотом",
+  "lang": "ru",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F6F7F8",
+  "theme_color": "#FFDD2D",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

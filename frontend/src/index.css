@@ -1,0 +1,231 @@
+@import "tailwindcss";
+
+/*
+  Цвета — токены. Светлая и тёмная тема отличаются только значениями переменных,
+  поэтому в разметке пишем bg-card, text-ink, text-muted и т. д. без dark:-вариантов.
+  Жёлтый — единственный акцентный цвет, как в визуальном языке Т-Банка.
+*/
+@theme inline {
+  --font-sans: "Onest", ui-sans-serif, system-ui, sans-serif;
+  --color-page: var(--lp-page);
+  --color-card: var(--lp-card);
+  --color-chip: var(--lp-chip);
+  --color-ink: var(--lp-ink);
+  --color-muted: var(--lp-muted);
+  --color-line: var(--lp-line);
+  --color-accent: var(--lp-accent);
+  --color-accent-ink: var(--lp-accent-ink);
+  --color-ok: var(--lp-ok);
+  --color-warn: var(--lp-warn);
+  --color-bad: var(--lp-bad);
+}
+
+:root {
+  --lp-page: #f6f7f8;
+  --lp-card: #ffffff;
+  --lp-chip: #eef0f2;
+  --lp-ink: #1c1c1e;
+  --lp-muted: #6b6e74;
+  --lp-line: #e6e7ea;
+  --lp-accent: #ffdd2d;
+  --lp-accent-ink: #1c1c1e;
+  --lp-ok: #1f9d57;
+  --lp-warn: #d9731c;
+  --lp-bad: #c62828;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --lp-page: #0f0f10;
+  --lp-card: #1c1c1f;
+  --lp-chip: #2a2a2e;
+  --lp-ink: #f2f2f3;
+  --lp-muted: #a0a2a7;
+  --lp-line: #2e2e33;
+  --lp-accent: #ffdd2d;
+  --lp-accent-ink: #1c1c1e;
+  --lp-ok: #3cc47c;
+  --lp-warn: #f2a15a;
+  --lp-bad: #ff6b6b;
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: var(--lp-page);
+  color: var(--lp-ink);
+  font-family: "Onest", ui-sans-serif, system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Tailwind 4 убрал «руку» у кнопок — возвращаем, так привычнее на компьютере. */
+button:not(:disabled),
+[role="button"]:not(:disabled) {
+  cursor: pointer;
+}
+
+/* ---------- Анимации Енота ---------- */
+
+.rc-part {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.rc-bob {
+  animation: rc-bob 3s ease-in-out infinite;
+}
+
+.rc-blink {
+  animation: rc-blink 4.5s ease-in-out infinite;
+}
+
+.rc-wave {
+  transform-origin: 20% 90%;
+  animation: rc-wave 1.2s ease-in-out infinite;
+}
+
+.rc-count {
+  animation: rc-count 0.7s ease-in-out infinite;
+}
+
+.rc-count-late {
+  animation: rc-count 0.7s ease-in-out 0.35s infinite;
+}
+
+.rc-dot {
+  animation: rc-dots 1.2s ease-in-out infinite;
+}
+
+.rc-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.rc-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.rc-jump {
+  animation: rc-jump 0.9s ease-out 2;
+}
+
+.rc-glow {
+  animation: rc-glow 1s ease-in-out infinite;
+}
+
+.rc-shake {
+  animation: rc-shake 1.6s ease-in-out infinite;
+}
+
+.rc-float {
+  animation: rc-float 2.4s ease-in-out infinite;
+}
+
+.flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: flame 1.4s ease-in-out infinite;
+}
+
+.pop-in {
+  animation: pop-in 0.35s ease-out both;
+}
+
+.slide-up {
+  animation: slide-up 0.3s ease-out both;
+}
+
+.step-in {
+  animation: step-in 0.25s ease-out both;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -12px;
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  animation: confetti-fall 1.8s ease-in forwards;
+}
+
+@keyframes rc-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes rc-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+@keyframes rc-wave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-20deg); }
+  75% { transform: rotate(12deg); }
+}
+
+@keyframes rc-count {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(-12deg); }
+}
+
+@keyframes rc-dots {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+@keyframes rc-jump {
+  0%, 100% { transform: translateY(0); }
+  35% { transform: translateY(-12px); }
+  65% { transform: translateY(0); }
+}
+
+@keyframes rc-glow {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+@keyframes rc-shake {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+@keyframes rc-float {
+  0%, 100% { transform: translateY(0); opacity: 0.9; }
+  50% { transform: translateY(-4px); opacity: 0.5; }
+}
+
+@keyframes flame {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.12) rotate(-3deg); }
+}
+
+@keyframes pop-in {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slide-up {
+  0% { transform: translateY(24px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes step-in {
+  0% { transform: translateX(24px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes confetti-fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(420px) rotate(540deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
