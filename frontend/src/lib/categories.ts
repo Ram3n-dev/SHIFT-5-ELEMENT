@@ -7,11 +7,15 @@ import {
   Coffee,
   Ellipsis,
   GraduationCap,
+<<<<<<< HEAD
   Fuel,
   HeartPulse,
   Landmark,
   Pill,
   Utensils,
+=======
+  HeartPulse,
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   Shirt,
   ShoppingCart,
   Smartphone,
@@ -34,7 +38,10 @@ export const EXPENSE_CATEGORIES = [
   'Здоровье',
   'Развлечения',
   'Одежда',
+<<<<<<< HEAD
   'Налоги',
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   'Другое',
 ] as const
 
@@ -56,11 +63,14 @@ const ICONS: Record<string, LucideIcon> = {
   Здоровье: HeartPulse,
   Развлечения: Ticket,
   Одежда: Shirt,
+<<<<<<< HEAD
   Налоги: Landmark,
   supermarket: ShoppingCart,
   gas_station: Fuel,
   restaurant: Utensils,
   pharmacy: Pill,
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   Стипендия: Banknote,
   Подработка: Briefcase,
   Перевод: ArrowLeftRight,
@@ -70,6 +80,7 @@ export function categoryIcon(category: string): LucideIcon {
   return ICONS[category] ?? Ellipsis
 }
 
+<<<<<<< HEAD
 /** Подписи категорий, которые приходят из справочника MCC. */
 const MCC_LABELS: Record<string, string> = {
   supermarket: 'Супермаркеты',
@@ -95,6 +106,8 @@ export function operationLabel(category: string, description: string): string {
   return text || category
 }
 
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 export function categoriesFor(type: OperationType): readonly string[] {
   return type === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES
 }

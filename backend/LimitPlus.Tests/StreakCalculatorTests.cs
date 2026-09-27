@@ -9,8 +9,13 @@ public class StreakCalculatorTests
 
     /// <summary>
     /// История по буквам, последняя буква — сегодня.
+<<<<<<< HEAD
     /// K, O, M, N — пользователь заходил (есть снимок дня), _ — не заходил вовсе.
     /// Для огонька важен сам вход, а не то, уложился ли день в лимит.
+=======
+    /// K — отмечен и в лимите, O — перерасход, M — снимок есть, но день не отмечен,
+    /// N — «сегодня без трат», _ — не заходил вовсе (снимка нет).
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     /// </summary>
     private static List<DayActivity> History(string days)
     {
@@ -31,18 +36,30 @@ public class StreakCalculatorTests
     }
 
     [Fact]
+<<<<<<< HEAD
     public void Visits_GrowStreak_UnvisitedTodayDoesNotBreakIt()
     {
         StreakResult result = StreakCalculator.Calculate(History("KKKKK_"), Today);
+=======
+    public void KeptDays_GrowStreak_TodayPendingDoesNotBreakIt()
+    {
+        StreakResult result = StreakCalculator.Calculate(History("KKKKKM"), Today);
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 
         Assert.Equal(5, result.Current);
         Assert.Equal(DayStatus.Pending, result.TodayStatus);
     }
 
     [Fact]
+<<<<<<< HEAD
     public void VisitWithoutOperations_CountsToday()
     {
         StreakResult result = StreakCalculator.Calculate(History("MMMMMM"), Today);
+=======
+    public void TodayKept_CountsToday()
+    {
+        StreakResult result = StreakCalculator.Calculate(History("KKKKKK"), Today);
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 
         Assert.Equal(6, result.Current);
         Assert.Equal(DayStatus.Kept, result.TodayStatus);
@@ -74,6 +91,7 @@ public class StreakCalculatorTests
     }
 
     [Fact]
+<<<<<<< HEAD
     public void Overspending_DoesNotBreakLoginStreak()
     {
         StreakResult result = StreakCalculator.Calculate(History("KKKOKK"), Today);
@@ -89,6 +107,23 @@ public class StreakCalculatorTests
 
         Assert.Equal(4, result.Current);
         Assert.Equal(DayStatus.Kept, result.TodayStatus);
+=======
+    public void Overspending_BreaksStreak()
+    {
+        StreakResult result = StreakCalculator.Calculate(History("KKKOKK"), Today);
+
+        Assert.Equal(2, result.Current);
+        Assert.Equal(3, result.Best);
+    }
+
+    [Fact]
+    public void OverspendingToday_ResetsStreakToday()
+    {
+        StreakResult result = StreakCalculator.Calculate(History("KKKO"), Today);
+
+        Assert.Equal(0, result.Current);
+        Assert.Equal(DayStatus.Over, result.TodayStatus);
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     }
 
     [Fact]

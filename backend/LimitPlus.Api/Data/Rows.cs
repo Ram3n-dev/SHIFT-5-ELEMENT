@@ -7,11 +7,16 @@ public class UserRow
 {
     public Guid Id { get; set; }
     public string? Email { get; set; }
+<<<<<<< HEAD
     public string? Login { get; set; }
     public string Name { get; set; } = "";
     public bool IsDemo { get; set; }
     public bool IsAdmin { get; set; }
     public DateTime? LastSeenAt { get; set; }
+=======
+    public string Name { get; set; } = "";
+    public bool IsDemo { get; set; }
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     public DateTime? PdConsentAt { get; set; }
     public DateTime? OnboardedAt { get; set; }
     public string? RegionCode { get; set; }
@@ -102,6 +107,7 @@ public class ChatMessageRow
     public DateTime CreatedAt { get; set; }
 }
 
+<<<<<<< HEAD
 public class AdminUserRow
 {
     public string Nickname { get; set; } = "";
@@ -116,6 +122,8 @@ public class CredentialRow
     public string? PasswordHash { get; set; }
 }
 
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 public class RegionalPriceRow
 {
     public string RegionCode { get; set; } = "";

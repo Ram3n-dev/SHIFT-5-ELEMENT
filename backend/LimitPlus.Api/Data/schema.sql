@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 -- Енотономика: схема базы данных PostgreSQL.
+=======
+-- Лимит+: схема базы данных PostgreSQL.
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 -- Выполняется при каждом запуске backend: IF NOT EXISTS не трогает уже созданные таблицы.
 -- Удаление пользователя (ON DELETE CASCADE) стирает все его данные — так работает «Удалить мои данные».
 
@@ -138,6 +142,7 @@ CREATE TABLE IF NOT EXISTS analytics_events (
     name       text NOT NULL,
     created_at timestamptz NOT NULL DEFAULT now()
 );
+<<<<<<< HEAD
 
 -- Вход по логину и почте. Пароль хранится только как хеш PBKDF2, не открытым текстом.
 ALTER TABLE users ADD COLUMN IF NOT EXISTS login text;
@@ -162,3 +167,5 @@ CREATE TABLE IF NOT EXISTS feedback (
     text       text NOT NULL DEFAULT '',
     created_at timestamptz NOT NULL DEFAULT now()
 );
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88

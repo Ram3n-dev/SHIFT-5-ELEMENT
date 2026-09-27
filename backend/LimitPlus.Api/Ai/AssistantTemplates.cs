@@ -266,7 +266,11 @@ public static class AssistantTemplates
         }
 
         CashbackMonthResult r = facts.LastCashback;
+<<<<<<< HEAD
         return $"За {facts.LastCashbackMonth} по операциям в Енотономике кэшбэк — около {Rub(r.Total)}. " +
+=======
+        return $"За {facts.LastCashbackMonth} по операциям в Лимит+ кэшбэк — около {Rub(r.Total)}. " +
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
                $"С «1% на всё» было бы {Rub(r.OnePercent)}, а максимум при другом выборе — {Rub(r.BestPossible)}.";
     }
 

@@ -49,6 +49,7 @@ public class MiscController : ControllerBase
     [AllowAnonymous]
     [HttpGet("health")]
     public IActionResult Health() => Ok(new { status = "ok" });
+<<<<<<< HEAD
 
     /// <summary>Оценка и короткий отзыв. В базу не попадают ничего, кроме оценки, текста и id пользователя.</summary>
     [Authorize]
@@ -64,4 +65,6 @@ public class MiscController : ControllerBase
         await _misc.AddFeedbackAsync(userId, request.Rating, request.Text.Trim());
         return NoContent();
     }
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 }

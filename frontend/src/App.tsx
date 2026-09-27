@@ -13,7 +13,10 @@ import OperationsPage from './pages/OperationsPage'
 import PrivacyPage from './pages/PrivacyPage'
 import PurchasePage from './pages/PurchasePage'
 import SettingsPage from './pages/SettingsPage'
+<<<<<<< HEAD
 import AdminPage from './pages/AdminPage'
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 import { AppProvider, useApp } from './state/AppContext'
 
 export default function App() {
@@ -49,7 +52,10 @@ function AppRoutes() {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/cashback" element={<CashbackPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+<<<<<<< HEAD
         <Route path="/admin" element={<AdminPage />} />
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
       </Route>
 
       <Route path="*" element={<Navigate to={home} replace />} />

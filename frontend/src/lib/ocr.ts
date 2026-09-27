@@ -3,6 +3,7 @@
 
 export const MAX_IMAGE_SIZE_BYTES = 8 * 1024 * 1024
 
+<<<<<<< HEAD
 /** Увеличивает мелкий скриншот и поднимает контраст, чтобы категории и проценты читались лучше. */
 async function prepareImage(file: File): Promise<Blob | File> {
   try {
@@ -39,6 +40,11 @@ async function prepareImage(file: File): Promise<Blob | File> {
 
 export async function recognizeImage(file: File, onProgress?: (percent: number) => void): Promise<string> {
   const { createWorker, PSM } = await import('tesseract.js')
+=======
+export async function recognizeImage(file: File, onProgress?: (percent: number) => void): Promise<string> {
+  // Библиотека большая, поэтому загружаем её только когда пользователь выбрал скриншот.
+  const { createWorker } = await import('tesseract.js')
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   const worker = await createWorker('rus+eng', 1, {
     logger: (message: { status: string; progress: number }) => {
       if (message.status === 'recognizing text') onProgress?.(Math.round(message.progress * 100))
@@ -46,6 +52,7 @@ export async function recognizeImage(file: File, onProgress?: (percent: number) 
   })
 
   try {
+<<<<<<< HEAD
     const image = await prepareImage(file)
     const lines = new Set<string>()
     for (const mode of [PSM.SINGLE_BLOCK, PSM.SPARSE_TEXT]) {
@@ -57,6 +64,10 @@ export async function recognizeImage(file: File, onProgress?: (percent: number) 
       }
     }
     return [...lines].join('\n')
+=======
+    const { data } = await worker.recognize(file)
+    return data.text
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   } finally {
     await worker.terminate()
   }

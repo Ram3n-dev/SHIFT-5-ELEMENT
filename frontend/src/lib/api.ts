@@ -22,8 +22,11 @@ import type {
   RecurringInput,
   Region,
   Reminder,
+<<<<<<< HEAD
   AdminOverview,
   BankImportResult,
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 } from './types'
 
 // Запросы идут на тот же адрес (/api): в разработке их передаёт в backend прокси Vite, в Docker — nginx.
@@ -101,8 +104,11 @@ export const api = {
   authConfig: () => get<AuthConfig>('/api/auth/config'),
   googleLoginUrl: '/api/auth/google',
   demoLogin: () => post<void>('/api/auth/demo'),
+<<<<<<< HEAD
   register: (login: string, email: string, password: string) => post<void>('/api/auth/register', { login, email, password }),
   login: (login: string, password: string) => post<void>('/api/auth/login', { login, password }),
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   logout: () => post<void>('/api/auth/logout'),
 
   // Профиль
@@ -124,7 +130,11 @@ export const api = {
   createAccount: (input: AccountInput) => post<Account>('/api/accounts', input),
   updateAccount: (id: string, input: AccountInput) => put<Account>(`/api/accounts/${id}`, input),
   deleteAccount: (id: string) => del(`/api/accounts/${id}`),
+<<<<<<< HEAD
   operations: (from?: string) => get<Operation[]>(from ? `/api/operations?from=${from}` : '/api/operations'),
+=======
+  operations: () => get<Operation[]>('/api/operations'),
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   addOperation: (input: OperationInput) => post<void>('/api/operations', input),
   importOperations: (accountId: string, operations: OperationInput[], balanceIncludesOperations: boolean) =>
     post<void>('/api/operations/import', {
@@ -157,6 +167,7 @@ export const api = {
   clearChat: () => del('/api/ai/history'),
   ask: (message: string, promptId: string | null) => post<ChatMessage>('/api/ai/chat', { message, prompt_id: promptId }),
 
+<<<<<<< HEAD
   // Админ-панель и отзывы
   admin: () => get<AdminOverview>('/api/admin'),
   savePrompt: (prompt: string) => put<AdminOverview>('/api/admin/prompt', { prompt }),
@@ -165,6 +176,8 @@ export const api = {
   // Учебная банковская выписка: сервер отдаёт уже обезличенные операции.
   importBankStatement: (accountId: string) => post<BankImportResult>('/api/bank/import', { account_id: accountId }),
 
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   // Напоминания, согласия, статистика
   reminders: () => get<Reminder[]>('/api/notifications'),
   reminderShown: (key: string) => post<void>(`/api/notifications/${encodeURIComponent(key)}/shown`),

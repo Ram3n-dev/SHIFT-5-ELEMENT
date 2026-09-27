@@ -20,7 +20,10 @@ export interface UserInfo {
   is_demo: boolean
   onboarded: boolean
   pd_consent: boolean
+<<<<<<< HEAD
   is_admin: boolean
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 }
 
 export interface Profile {
@@ -336,6 +339,7 @@ export interface PartnerOfferInput {
   category: string | null
   valid_until: string | null
 }
+<<<<<<< HEAD
 
 export interface SafeBankOperation {
   id: string
@@ -368,3 +372,5 @@ export interface AdminOverview {
   user_count: number
   users: AdminUser[]
 }
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88

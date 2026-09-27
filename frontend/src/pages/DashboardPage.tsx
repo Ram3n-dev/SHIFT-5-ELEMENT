@@ -176,9 +176,15 @@ function StreakTile({ dashboard }: { dashboard: Dashboard }) {
   }
 
   const status = {
+<<<<<<< HEAD
     kept: 'Сегодня ты заходил — день засчитан',
     over: 'Сегодня перерасход',
     pending: 'Зайди сегодня — огонёк засчитает день',
+=======
+    kept: 'Сегодня засчитан',
+    over: 'Сегодня перерасход — серия начнётся заново',
+    pending: 'Отметь сегодняшний день',
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     missed: '',
     frozen: '',
     none: '',

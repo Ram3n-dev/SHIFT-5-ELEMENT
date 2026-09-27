@@ -13,7 +13,11 @@ import { useApp } from '../state/AppContext'
 
 // Кэшбэк: 1) пользователь добавляет категории, которые банк предложил на месяц (скриншот или вручную);
 // 2) код считает, какие 4 принесут больше рублей по его тратам; 3) Енот объясняет выбор;
+<<<<<<< HEAD
 // 4) в конце месяца — итоги: сколько реально принёс кэшбэк. Выбор категорий к банку не отправляется.
+=======
+// 4) в конце месяца — итоги: сколько реально принёс кэшбэк. К банку Лимит+ не подключается.
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 
 type Tab = 'choose' | 'results' | 'partners'
 
@@ -183,7 +187,11 @@ function OptionsCard({
           <ScreenshotImport
             label="Загрузить скриншот категорий"
             parse={parseCashbackOptions}
+<<<<<<< HEAD
             emptyMessage="Не нашли на картинке категории кэшбэка. Попробуй скриншот целиком или добавь категории вручную."
+=======
+            emptyMessage="Не нашли на скриншоте строк вида «Категория 5%». Добавь категории вручную."
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
             onParsed={(items) => setDrafts((list) => [...list.filter((draft) => draft.name.trim() !== ''), ...items.map((item) => toDraft(item))])}
           />
 
@@ -367,7 +375,11 @@ function PlanCard({ data, onSaved }: { data: CashbackMonth; onSaved: (value: Cas
         )}
       </div>
       <p className="text-xs text-muted">
+<<<<<<< HEAD
         Можно выбрать до {MAX_CHOSEN} категорий. После выбора отметь их в приложении банка: Енотономика только считает и к банку не
+=======
+        Можно выбрать до {MAX_CHOSEN} категорий. После выбора отметь их в приложении банка: Лимит+ только считает и к банку не
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
         подключается.
       </p>
     </Card>
@@ -453,7 +465,11 @@ function ResultsTab() {
                 : `Другой набор категорий дал бы ещё ${formatRub(result.best_possible - result.total)}.`}
             </p>
             <p className="border-t border-line pt-3 text-sm text-muted">
+<<<<<<< HEAD
               Всего с Енотономикой кэшбэка: <b className="text-ink">{formatRub(data.all_time_total)}</b>
+=======
+              Всего с Лимит+ кэшбэка: <b className="text-ink">{formatRub(data.all_time_total)}</b>
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
             </p>
           </Card>
         </div>

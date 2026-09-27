@@ -7,7 +7,11 @@ namespace LimitPlus.Api.Models;
 
 public record AuthConfigResponse(bool GoogleEnabled, bool DemoEnabled);
 
+<<<<<<< HEAD
 public record UserDto(Guid Id, string Name, string? Email, bool IsDemo, bool Onboarded, bool PdConsent, bool IsAdmin);
+=======
+public record UserDto(Guid Id, string Name, string? Email, bool IsDemo, bool Onboarded, bool PdConsent);
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 
 public record ProfileDto(
     string? City,
@@ -115,6 +119,7 @@ public record ChatMessageDto(long Id, string Role, string Text, string? Source, 
 }
 
 public record RegionDto(string Code, string Name, string[] Cities);
+<<<<<<< HEAD
 
 public record AdminUserDto(string Nickname, DateTime? LastSeenAt);
 
@@ -133,3 +138,5 @@ public record SafeOperationDto(
     string OperationType);
 
 public record BankImportResponse(int Imported, int Skipped, decimal? Balance, List<SafeOperationDto> Operations);
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88

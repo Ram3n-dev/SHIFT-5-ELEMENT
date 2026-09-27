@@ -6,6 +6,7 @@ namespace LimitPlus.Api.Models;
 // Тела запросов. Атрибуты проверяют данные ещё до контроллера:
 // при ошибке ASP.NET Core сам вернёт 400 с описанием проблемы.
 
+<<<<<<< HEAD
 public class RegisterRequest
 {
     [Required(ErrorMessage = "Укажи логин")]
@@ -54,6 +55,8 @@ public class BankImportRequest
     public Guid AccountId { get; set; }
 }
 
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 public class OnboardingRequest
 {
     /// <summary>Согласие на обработку персональных данных — без него онбординг не завершить.</summary>

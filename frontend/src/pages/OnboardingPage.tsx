@@ -1,9 +1,16 @@
 import { useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
+<<<<<<< HEAD
 import { ChevronLeft, Plus, X } from 'lucide-react'
 import CityPicker, { type CityValue } from '../components/CityPicker'
 import Raccoon from '../components/Raccoon'
 import { Button, Chip, ErrorNote, MoneyInput, TextInput } from '../components/ui'
+=======
+import { ChevronLeft } from 'lucide-react'
+import CityPicker, { type CityValue } from '../components/CityPicker'
+import Raccoon from '../components/Raccoon'
+import { Button, Chip, ErrorNote, MoneyInput } from '../components/ui'
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 import { api } from '../lib/api'
 import { formatDate, formatRub, nextStipendDate, parseAmount, pluralDays } from '../lib/format'
 import type { Dashboard, Me, RaccoonPose } from '../lib/types'
@@ -19,7 +26,10 @@ interface MandatoryItem {
   name: string
   amount: string
   on: boolean
+<<<<<<< HEAD
   custom?: boolean
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 }
 
 const MANDATORY_DEFAULTS: MandatoryItem[] = [
@@ -50,8 +60,11 @@ export default function OnboardingPage() {
   const [cash, setCash] = useState('')
   const [savings, setSavings] = useState('')
   const [mandatory, setMandatory] = useState<MandatoryItem[]>(MANDATORY_DEFAULTS)
+<<<<<<< HEAD
   const [customName, setCustomName] = useState('')
   const [customAmount, setCustomAmount] = useState('')
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   const [reserve, setReserve] = useState(0)
   const [period, setPeriod] = useState(1)
   const [error, setError] = useState<string | null>(null)
@@ -112,6 +125,7 @@ export default function OnboardingPage() {
     navigate('/dashboard', { replace: true })
   }
 
+<<<<<<< HEAD
   const addCustom = () => {
     const name = customName.trim()
     if (name.length < 2) {
@@ -128,6 +142,8 @@ export default function OnboardingPage() {
     setCustomAmount('')
   }
 
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   const next = () => {
     switch (step) {
       case 'hello':
@@ -147,6 +163,7 @@ export default function OnboardingPage() {
         return go('mandatory')
       }
       case 'mandatory':
+<<<<<<< HEAD
         if (customName.trim() !== '') {
           const name = customName.trim()
           if (name.length < 2) return setError('Напиши название своей категории.')
@@ -154,6 +171,8 @@ export default function OnboardingPage() {
             setMandatory((list) => [...list, { name, amount: customAmount.trim() === '' ? '0' : customAmount, on: true, custom: true }])
           }
         }
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
         return go('reserve')
       case 'reserve':
         return go('period')
@@ -224,7 +243,11 @@ export default function OnboardingPage() {
               <label className="flex cursor-pointer items-start gap-3 rounded-2xl bg-card p-4">
                 <input type="checkbox" className="mt-1 h-5 w-5 shrink-0" style={{ accentColor: 'var(--lp-ink)' }} checked={consent} onChange={(event) => setConsent(event.target.checked)} />
                 <span className="text-sm text-ink">
+<<<<<<< HEAD
                   Согласен на обработку данных, которые введу, чтобы Енотономика считала мой бюджет.{' '}
+=======
+                  Согласен на обработку данных, которые введу, чтобы Лимит+ считал мой бюджет.{' '}
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
                   <a href="/privacy" target="_blank" rel="noreferrer" className="font-medium underline">
                     Подробнее
                   </a>
@@ -285,7 +308,11 @@ export default function OnboardingPage() {
             <Question pose="think" title="Обязательные траты в месяц" text="То, что точно придётся оплатить. Эти деньги Енот отложит, и они не попадут в дневной лимит.">
               <div className="flex flex-col gap-2">
                 {mandatory.map((item, i) => (
+<<<<<<< HEAD
                   <div key={`${item.name}-${i}`} className={`flex items-center gap-3 rounded-2xl p-2 pl-4 transition ${item.on ? 'bg-card' : 'bg-chip'}`}>
+=======
+                  <div key={item.name} className={`flex items-center gap-3 rounded-2xl p-2 pl-4 transition ${item.on ? 'bg-card' : 'bg-chip'}`}>
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
                     <label className="flex flex-1 cursor-pointer items-center gap-3">
                       <input
                         type="checkbox"
@@ -302,6 +329,7 @@ export default function OnboardingPage() {
                         onChange={(value) => setMandatory((list) => list.map((row, j) => (j === i ? { ...row, amount: value, on: true } : row)))}
                       />
                     </div>
+<<<<<<< HEAD
                     {item.custom && (
                       <button
                         type="button"
@@ -335,6 +363,11 @@ export default function OnboardingPage() {
                   </Button>
                 </div>
               </div>
+=======
+                  </div>
+                ))}
+              </div>
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
               <p className="text-lg text-ink">
                 Итого: <b>{formatRub(mandatoryTotal)}</b> в месяц
               </p>

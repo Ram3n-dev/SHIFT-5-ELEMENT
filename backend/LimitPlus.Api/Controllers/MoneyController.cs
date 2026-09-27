@@ -110,9 +110,15 @@ public class MoneyController : AppControllerBase
                 return $"Неизвестная категория «{operation.Category}».";
             }
 
+<<<<<<< HEAD
             if (operation.Date > Today || operation.Date < Today.AddYears(-6))
             {
                 return "Дата операции должна быть не позже сегодняшней и не раньше чем шесть лет назад.";
+=======
+            if (operation.Date > Today || operation.Date < Today.AddYears(-1))
+            {
+                return "Дата операции должна быть не позже сегодняшней и не раньше чем год назад.";
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
             }
         }
 

@@ -38,10 +38,18 @@ public record StreakResult(
     List<StreakDay> Week);
 
 /// <summary>
+<<<<<<< HEAD
 /// Огонёк за ежедневный вход. Правила:
 /// 1. День засчитан, если пользователь открыл приложение: на этот день есть снимок.
 /// 2. Один пропущенный день раз в 7 дней закрывает заморозка — серия сохраняется.
 /// 3. Сегодняшний день, пока пользователь ещё не заходил, серию не рвёт.
+=======
+/// Огонёк, как в Duolingo. Правила:
+/// 1. День засчитан, если он отмечен (есть запись или «Сегодня без трат») и траты не больше лимита дня.
+/// 2. Перерасход обнуляет серию.
+/// 3. Один пропущенный день раз в 7 дней закрывает заморозка — серия сохраняется.
+/// 4. Сегодняшний день, пока не отмечен, серию не рвёт: огонёк просто ещё не горит.
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 /// </summary>
 public static class StreakCalculator
 {
@@ -92,7 +100,10 @@ public static class StreakCalculator
             Week: BuildWeek(statuses, today));
     }
 
+<<<<<<< HEAD
     /// <summary>Снимок дня появляется, когда пользователь открывает приложение. Это и есть ежедневный вход.</summary>
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     private static DayStatus StatusOf(DayActivity? day, bool isToday)
     {
         if (day is null)
@@ -100,7 +111,21 @@ public static class StreakCalculator
             return isToday ? DayStatus.Pending : DayStatus.Missed;
         }
 
+<<<<<<< HEAD
         return DayStatus.Kept;
+=======
+        if (day.Spent > day.DayLimit)
+        {
+            return DayStatus.Over;
+        }
+
+        if (day.HasOperations || day.NoSpendConfirmed)
+        {
+            return DayStatus.Kept;
+        }
+
+        return isToday ? DayStatus.Pending : DayStatus.Missed;
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     }
 
     private static bool CanFreeze(DateOnly? lastFreeze, DateOnly day) =>

@@ -1,10 +1,18 @@
+<<<<<<< HEAD
 import { useEffect, useState, type FormEvent } from 'react'
+=======
+import { useEffect, useState } from 'react'
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 import { Link } from 'react-router-dom'
 import { BadgePercent, CalendarClock, LogIn, MessageCircle } from 'lucide-react'
 import { Flame } from '../components/Streak'
 import Logo from '../components/Logo'
 import Raccoon from '../components/Raccoon'
+<<<<<<< HEAD
 import { Button, Card, ErrorNote, TextInput } from '../components/ui'
+=======
+import { Button, Card, ErrorNote } from '../components/ui'
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 import { api } from '../lib/api'
 import type { AuthConfig } from '../lib/types'
 import { useApp } from '../state/AppContext'
@@ -18,10 +26,13 @@ const FEATURES = [
 export default function LoginPage() {
   const { setMe } = useApp()
   const [config, setConfig] = useState<AuthConfig | null>(null)
+<<<<<<< HEAD
   const [mode, setMode] = useState<'login' | 'register'>('login')
   const [login, setLogin] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -32,15 +43,19 @@ export default function LoginPage() {
       .catch(() => setError('Сервер не отвечает. Проверь, что backend запущен.'))
   }, [])
 
+<<<<<<< HEAD
   const enter = async () => {
     setMe(await api.me())
   }
 
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   const demo = async () => {
     setBusy(true)
     setError(null)
     try {
       await api.demoLogin()
+<<<<<<< HEAD
       await enter()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Не удалось войти.')
@@ -56,6 +71,9 @@ export default function LoginPage() {
       if (mode === 'register') await api.register(login.trim(), email.trim(), password)
       else await api.login(login.trim(), password)
       await enter()
+=======
+      setMe(await api.me())
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Не удалось войти.')
       setBusy(false)
@@ -81,7 +99,11 @@ export default function LoginPage() {
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-card">
                 <Flame lit size={24} />
               </span>
+<<<<<<< HEAD
               Огонёк за каждый день, когда заходишь в приложение
+=======
+              Огонёк за каждый день в пределах лимита
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
             </li>
           </ul>
         </div>
@@ -98,6 +120,7 @@ export default function LoginPage() {
 
           {error && <ErrorNote>{error}</ErrorNote>}
 
+<<<<<<< HEAD
           <div className="grid grid-cols-2 gap-1 rounded-full bg-chip p-1">
             <button
               type="button"
@@ -153,25 +176,39 @@ export default function LoginPage() {
             </Button>
           </form>
 
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
           <div className="flex flex-col gap-2">
             {config?.google_enabled && (
               <a
                 href={api.googleLoginUrl}
+<<<<<<< HEAD
                 className="flex h-12 items-center justify-center gap-2 rounded-full bg-chip font-semibold text-ink transition hover:brightness-95"
+=======
+                className="flex h-12 items-center justify-center gap-2 rounded-full bg-accent font-semibold text-accent-ink transition hover:brightness-95"
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
               >
                 <LogIn className="h-5 w-5" aria-hidden="true" />
                 Войти через Google
               </a>
             )}
             {config?.demo_enabled && (
+<<<<<<< HEAD
               <Button variant="secondary" loading={busy} onClick={demo}>
+=======
+              <Button variant={config.google_enabled ? 'secondary' : 'primary'} loading={busy} onClick={demo}>
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
                 Попробовать без регистрации
               </Button>
             )}
           </div>
 
           <p className="text-center text-xs text-muted">
+<<<<<<< HEAD
             Пароль Енотономики хранится только как хеш. Не вводи реальные пароли банков, номера карт и коды из SMS. Демо-профиль удаляется через 7 дней.{' '}
+=======
+            Только учебные данные: не вводи реальные пароли, номера карт и коды из SMS. Демо-профиль удаляется через 7 дней.{' '}
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
             <Link to="/privacy" className="font-medium text-ink underline">
               Как мы храним данные
             </Link>

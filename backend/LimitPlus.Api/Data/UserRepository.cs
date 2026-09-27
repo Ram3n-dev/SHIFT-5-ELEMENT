@@ -22,9 +22,14 @@ public class UserRepository
 {
     private const string UserColumns =
         """
+<<<<<<< HEAD
         id, email, login, name, is_demo, is_admin, last_seen_at, pd_consent_at, onboarded_at, region_code, city,
         stipend_amount, stipend_day, stipend_confirmed_on, mandatory_monthly, mandatory_left, reserve,
         limit_period_days, theme, notifications_enabled
+=======
+        id, email, name, is_demo, pd_consent_at, onboarded_at, region_code, city, stipend_amount, stipend_day,
+        stipend_confirmed_on, mandatory_monthly, mandatory_left, reserve, limit_period_days, theme, notifications_enabled
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
         """;
 
     private readonly NpgsqlDataSource _db;
@@ -41,6 +46,7 @@ public class UserRepository
             $"SELECT {UserColumns} FROM users WHERE id = @UserId", new { UserId = userId });
     }
 
+<<<<<<< HEAD
     /// <summary>Находит пользователя по Google-аккаунту или создаёт нового. Если почта уже есть — привязывает Google к этому аккаунту.</summary>
     public async Task<Guid> UpsertGoogleUserAsync(string googleSub, string email, string name)
     {
@@ -165,6 +171,20 @@ public class UserRepository
             ORDER BY last_seen_at DESC NULLS LAST, created_at DESC
             """);
         return rows.ToList();
+=======
+    /// <summary>Находит пользователя по Google-аккаунту или создаёт нового. Возвращает id.</summary>
+    public async Task<Guid> UpsertGoogleUserAsync(string googleSub, string email, string name)
+    {
+        await using NpgsqlConnection connection = await _db.OpenConnectionAsync();
+        return await connection.ExecuteScalarAsync<Guid>(
+            """
+            INSERT INTO users (id, google_sub, email, name)
+            VALUES (@Id, @GoogleSub, @Email, @Name)
+            ON CONFLICT (google_sub) DO UPDATE SET email = EXCLUDED.email, name = EXCLUDED.name
+            RETURNING id
+            """,
+            new { Id = Guid.NewGuid(), GoogleSub = googleSub, Email = email, Name = name });
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     }
 
     public async Task<Guid> CreateDemoUserAsync()

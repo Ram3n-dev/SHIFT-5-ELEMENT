@@ -84,7 +84,11 @@ public class UserStateService
         await _money.SaveSnapshotAsync(userId, today, budget.DayLimit);
         List<SnapshotRow> snapshots = await _money.GetSnapshotsAsync(userId, historyStart);
 
+<<<<<<< HEAD
         // Огонёк: снимок дня создаётся при открытии приложения и считается ежедневным входом.
+=======
+        // Огонёк: для каждого дня со снимком — лимит, траты и была ли активность.
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
         Dictionary<DateOnly, decimal> spentByDay = operations
             .Where(IsEverydaySpending)
             .GroupBy(o => o.Date)

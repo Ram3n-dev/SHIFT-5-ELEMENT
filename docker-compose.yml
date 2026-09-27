@@ -32,7 +32,10 @@ services:
       Llm__BaseUrl: ${LLM_BASE_URL:-https://routerai.ru/api/v1}
       Llm__Model: ${LLM_MODEL:-deepseek/deepseek-v4-pro-0813}
       Llm__ApiKey: ${LLM_API_KEY:-}
+<<<<<<< HEAD
       Bank__AllowInvalidCertificate: "true"
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     volumes:
       - keys:/keys
     depends_on:

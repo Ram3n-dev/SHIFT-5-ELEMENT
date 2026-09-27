@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 using System.Net.Security;
 using System.Security.Authentication;
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -54,6 +57,7 @@ builder.Services.AddHttpClient<LlmClient>((services, client) =>
     client.Timeout = TimeSpan.FromSeconds(llm.TimeoutSeconds);
 });
 
+<<<<<<< HEAD
 builder.Services.Configure<BankOptions>(builder.Configuration.GetSection(BankOptions.SectionName));
 // Обход проверки сертификата — только у клиента песочницы T-Bank, не у остальных HTTPS-запросов.
 // В Production выключен, пока явно не задан Bank:AllowInvalidCertificate (так собран docker-compose).
@@ -80,6 +84,8 @@ builder.Services.AddHttpClient<BankSandboxClient>(client =>
     return handler;
 });
 
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 // ---------- Вход: cookie + Google ----------
 // Ключи шифрования cookie храним в папке (в Docker — в томе), чтобы после перезапуска не разлогинивало.
 string? keysPath = builder.Configuration["DataProtection:KeysPath"];
@@ -92,11 +98,15 @@ string googleClientId = builder.Configuration["Google:ClientId"] ?? "";
 string googleClientSecret = builder.Configuration["Google:ClientSecret"] ?? "";
 bool googleEnabled = googleClientId.Length > 0 && googleClientSecret.Length > 0;
 bool demoEnabled = builder.Configuration.GetValue("Auth:DemoLogin", true);
+<<<<<<< HEAD
 string[] adminLogins = builder.Configuration.GetSection("Auth:AdminLogins").Get<string[]>() ?? ["admin"];
 builder.Services.AddSingleton(new AuthSettings(
     googleEnabled,
     demoEnabled,
     adminLogins.ToHashSet(StringComparer.OrdinalIgnoreCase)));
+=======
+builder.Services.AddSingleton(new AuthSettings(googleEnabled, demoEnabled));
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 
 AuthenticationBuilder authentication = builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

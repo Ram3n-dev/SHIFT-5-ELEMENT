@@ -30,9 +30,13 @@ public class ProfileController : AppControllerBase
             return Unauthorized();
         }
 
+<<<<<<< HEAD
         var dto = new UserDto(
             user.Id, user.Name, user.Email, user.IsDemo, user.OnboardedAt is not null, user.PdConsentAt is not null, user.IsAdmin);
         await _users.TouchLastSeenAsync(user.Id);
+=======
+        var dto = new UserDto(user.Id, user.Name, user.Email, user.IsDemo, user.OnboardedAt is not null, user.PdConsentAt is not null);
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
         return new MeResponse(dto, ProfileDto.From(user, Today));
     }
 
@@ -44,7 +48,11 @@ public class ProfileController : AppControllerBase
     {
         if (!request.PdConsent)
         {
+<<<<<<< HEAD
             return Problem(title: "Нужно согласие", detail: "Без согласия на обработку данных Енотономика не сможет посчитать бюджет.",
+=======
+            return Problem(title: "Нужно согласие", detail: "Без согласия на обработку данных Лимит+ не сможет посчитать бюджет.",
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
                 statusCode: StatusCodes.Status400BadRequest);
         }
 

@@ -41,7 +41,11 @@ public record PurchaseResult(
     string Message);
 
 /// <summary>
+<<<<<<< HEAD
 /// Все финансовые формулы Енотономики живут здесь. Frontend и ИИ ничего не считают.
+=======
+/// Все финансовые формулы Лимит+ живут здесь. Frontend и ИИ ничего не считают.
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 /// </summary>
 public static class BudgetCalculator
 {

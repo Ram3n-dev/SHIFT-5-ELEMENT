@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from 'react'
+=======
+import { useEffect, useRef, useState, type FormEvent } from 'react'
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 import { useSearchParams } from 'react-router-dom'
 import { SendHorizontal, Trash2 } from 'lucide-react'
 import ConfirmDialog from '../components/ConfirmDialog'
@@ -20,7 +24,10 @@ export default function ChatPage() {
   const [clearOpen, setClearOpen] = useState(false)
   const [searchParams, setSearchParams] = useSearchParams()
   const bottom = useRef<HTMLDivElement>(null)
+<<<<<<< HEAD
   const scroller = useRef<HTMLDivElement>(null)
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   const eurekaTimer = useRef<number | undefined>(undefined)
 
   useEffect(() => {
@@ -33,10 +40,15 @@ export default function ChatPage() {
     return () => window.clearTimeout(eurekaTimer.current)
   }, [])
 
+<<<<<<< HEAD
   useLayoutEffect(() => {
     const node = scroller.current
     if (!node) return
     node.scrollTop = node.scrollHeight
+=======
+  useEffect(() => {
+    bottom.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   }, [messages, waiting])
 
   const ask = async (message: string, promptId: string | null) => {
@@ -79,7 +91,11 @@ export default function ChatPage() {
   }
 
   return (
+<<<<<<< HEAD
     <div className="flex h-[calc(100dvh-12rem)] flex-col lg:h-[calc(100dvh-6rem)]">
+=======
+    <div className="flex min-h-[calc(100dvh-10rem)] flex-col lg:min-h-[calc(100dvh-5rem)]">
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
       <div className="mb-3 flex items-center gap-3">
         <Raccoon pose={pose} size={72} />
         <div className="flex-1">
@@ -93,7 +109,11 @@ export default function ChatPage() {
         )}
       </div>
 
+<<<<<<< HEAD
       <div ref={scroller} className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto pb-4">
+=======
+      <div className="flex flex-1 flex-col gap-3 pb-4">
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
         {messages === null && !error && <Spinner />}
         {messages?.length === 0 && (
           <div className="rounded-3xl bg-card p-5 text-ink">
@@ -115,7 +135,11 @@ export default function ChatPage() {
         <div ref={bottom} />
       </div>
 
+<<<<<<< HEAD
       <div className="flex flex-col gap-3 bg-page pt-2 pb-1">
+=======
+      <div className="sticky bottom-24 flex flex-col gap-3 bg-page pt-2 pb-1 lg:bottom-4">
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
         {prompts.length > 0 && (
           <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 lg:mx-0 lg:flex-wrap lg:px-0">
             {prompts.map((preset) => (
@@ -175,7 +199,11 @@ function Bubble({ message }: { message: ChatMessage }) {
     <div className="pop-in flex max-w-[92%] flex-col gap-2 rounded-3xl rounded-tl-md bg-card px-4 py-3 lg:max-w-[75%]">
       <p className="leading-relaxed whitespace-pre-line text-ink">{message.text}</p>
       <span className="text-xs text-muted">
+<<<<<<< HEAD
         {message.source === 'llm' ? 'Ответ ИИ по расчётам Енотономики' : 'Расчёт Енотономики'} · ориентир, а не рекомендация
+=======
+        {message.source === 'llm' ? 'Ответ ИИ по расчётам Лимит+' : 'Расчёт Лимит+'} · ориентир, а не рекомендация
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
       </span>
     </div>
   )

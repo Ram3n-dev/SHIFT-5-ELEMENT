@@ -25,7 +25,11 @@ export default function ScreenshotImport<T>({ label, parse, onParsed, emptyMessa
     if (!file) return
     setError(null)
 
+<<<<<<< HEAD
     if (!file.type.startsWith('image/') && !/\.(png|jpe?g|webp|gif|bmp)$/i.test(file.name)) {
+=======
+    if (!file.type.startsWith('image/')) {
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
       setError('Нужна картинка: PNG или JPG.')
       return
     }

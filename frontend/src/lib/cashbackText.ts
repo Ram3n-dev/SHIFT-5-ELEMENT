@@ -14,23 +14,34 @@ export interface ParsedOffer {
   valid_until: string | null
 }
 
+<<<<<<< HEAD
 const PERCENT_SOURCE = String.raw`(\d{1,2}(?:[.,]\d{1,2})?)\s*(?:%|％|проц(?:ент(?:а|ов)?)?|(?:°|o|о|0)\s*/\s*(?:o|о|0))`
 
 function percentPattern() {
   return new RegExp(PERCENT_SOURCE, 'gi')
 }
+=======
+const PERCENT = /(\d{1,2}(?:[.,]\d{1,2})?)\s*%/g
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 const NOISE = /(выбер|выбра|категори|кэшб[эе]к|кешб[эе]к|готово|сохран|месяц|доступн|осталось|подробнее|назад|отмена|учебный|^до\s)/i
 const MAX_OPTIONS = 20
 
 /** Убирает проценты, мусорные символы и лишние пробелы. «• Супермаркеты 5%» → «Супермаркеты». */
 function cleanName(text: string): string {
   const cleaned = text
+<<<<<<< HEAD
     .replace(percentPattern(), ' ')
+=======
+    .replace(PERCENT, ' ')
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     .replace(/[^\p{L}\p{N}\s\-«»"'.,&]/gu, ' ')
     .replace(/\s+/g, ' ')
     .trim()
     .replace(/^[-.,\s]+|[-.,\s]+$/g, '')
+<<<<<<< HEAD
   if (cleaned === '') return ''
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
   return cleaned.charAt(0).toUpperCase() + cleaned.slice(1)
 }
 
@@ -40,11 +51,16 @@ function isName(text: string): boolean {
 }
 
 function percentsIn(line: string): number[] {
+<<<<<<< HEAD
   return [...line.matchAll(percentPattern())]
+=======
+  return [...line.matchAll(PERCENT)]
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     .map((match) => Number(match[1].replace(',', '.')))
     .filter((value) => value > 0 && value <= 100)
 }
 
+<<<<<<< HEAD
 const KNOWN_CATEGORIES = [
   'Супермаркеты',
   'Рестораны',
@@ -133,6 +149,8 @@ function recoverKnown(text: string, result: ParsedCashbackOption[], seen: Set<st
   }
 }
 
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 /**
  * Категории кэшбэка. Понимает строки «Супермаркеты 5%», «5% Супермаркеты»,
  * а также процент и название на соседних строках.
@@ -145,7 +163,11 @@ export function parseCashbackOptions(text: string): ParsedCashbackOption[] {
 
   const add = (name: string, percent: number) => {
     const key = name.toLowerCase()
+<<<<<<< HEAD
     if (!seen.has(key) && result.length < MAX_OPTIONS && percent > 0 && percent <= 100) {
+=======
+    if (!seen.has(key) && result.length < MAX_OPTIONS) {
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
       seen.add(key)
       result.push({ name, percent })
     }
@@ -155,6 +177,7 @@ export function parseCashbackOptions(text: string): ParsedCashbackOption[] {
     const line = rawLine.trim()
     if (line === '') continue
 
+<<<<<<< HEAD
     const pairs = pairsInLine(line)
     if (pairs.length > 0) {
       pairs.forEach((pair) => add(pair.name, pair.percent))
@@ -167,6 +190,16 @@ export function parseCashbackOptions(text: string): ParsedCashbackOption[] {
     const name = cleanName(line)
 
     if (percents.length > 0) {
+=======
+    const percents = percentsIn(line)
+    const name = cleanName(line)
+
+    if (percents.length > 0 && isName(name)) {
+      add(name, percents[0])
+      lastName = null
+      pendingPercent = null
+    } else if (percents.length > 0) {
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
       if (lastName) {
         add(lastName, percents[0])
         lastName = null
@@ -183,8 +216,12 @@ export function parseCashbackOptions(text: string): ParsedCashbackOption[] {
     }
   }
 
+<<<<<<< HEAD
   recoverKnown(text, result, seen)
   return result.slice(0, MAX_OPTIONS)
+=======
+  return result
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 }
 
 const MONTHS = ['январ', 'феврал', 'март', 'апрел', 'ма', 'июн', 'июл', 'август', 'сентябр', 'октябр', 'ноябр', 'декабр']

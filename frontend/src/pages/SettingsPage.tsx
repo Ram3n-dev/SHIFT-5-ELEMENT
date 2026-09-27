@@ -19,7 +19,11 @@ export default function SettingsPage() {
 
   return (
     <div>
+<<<<<<< HEAD
       <PageTitle title="Профиль" subtitle={me.user.is_demo ? 'Демо-вход: данные удалятся через 7 дней' : (me.user.email ?? me.user.name)} />
+=======
+      <PageTitle title="Профиль" subtitle={me.user.is_demo ? 'Демо-вход: данные удалятся через 7 дней' : (me.user.email ?? undefined)} />
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
       <div className="grid gap-4 lg:grid-cols-2 lg:items-start">
         <div className="flex flex-col gap-4">
           <BudgetSection me={me} />
@@ -28,6 +32,7 @@ export default function SettingsPage() {
         <div className="flex flex-col gap-4">
           <AccountsSection />
           <RecurringSection />
+<<<<<<< HEAD
           {me.user.is_admin && (
             <Card className="flex flex-col gap-3">
               <SectionTitle>Админ-панель</SectionTitle>
@@ -37,6 +42,8 @@ export default function SettingsPage() {
               </Link>
             </Card>
           )}
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
           <PrivacySection />
         </div>
       </div>

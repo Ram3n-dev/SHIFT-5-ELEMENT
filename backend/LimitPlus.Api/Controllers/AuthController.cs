@@ -10,8 +10,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LimitPlus.Api.Controllers;
 
+<<<<<<< HEAD
 /// <summary>Какие способы входа включены в настройках и какие логины считаются администраторами.</summary>
 public record AuthSettings(bool GoogleEnabled, bool DemoEnabled, IReadOnlySet<string> AdminLogins);
+=======
+/// <summary>Какие способы входа включены в настройках.</summary>
+public record AuthSettings(bool GoogleEnabled, bool DemoEnabled);
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 
 /// <summary>
 /// Вход через Google и демо-вход. После входа браузер получает cookie lp_auth (HttpOnly),
@@ -45,6 +50,7 @@ public class AuthController : ControllerBase
         return Challenge(new AuthenticationProperties { RedirectUri = "/" }, GoogleDefaults.AuthenticationScheme);
     }
 
+<<<<<<< HEAD
     /// <summary>Регистрация: логин, почта и пароль. Пароль в базу попадает только как хеш.</summary>
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request)
@@ -97,6 +103,8 @@ public class AuthController : ControllerBase
         return NoContent();
     }
 
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     /// <summary>Вход без Google: создаёт временного пользователя (хранится неделю). Для показа на защите.</summary>
     [HttpPost("demo")]
     public async Task<IActionResult> Demo()
@@ -146,7 +154,10 @@ public class AuthController : ControllerBase
 
         UserRepository users = context.HttpContext.RequestServices.GetRequiredService<UserRepository>();
         Guid userId = await users.UpsertGoogleUserAsync(googleId, email, name);
+<<<<<<< HEAD
         await users.TouchLastSeenAsync(userId);
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
         context.Identity.AddClaim(new Claim(AppControllerBase.UserIdClaim, userId.ToString()));
     }
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { BadgePercent, House, List, MessageCircle, Plus, Shield, ShoppingBag, UserRound, type LucideIcon } from 'lucide-react'
@@ -5,6 +6,14 @@ import { trackEvent } from '../lib/consent'
 import { useApp } from '../state/AppContext'
 import AddExpenseSheet from './AddExpenseSheet'
 import FeedbackDialog from './FeedbackDialog'
+=======
+import { useEffect } from 'react'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { BadgePercent, House, List, MessageCircle, Plus, ShoppingBag, UserRound, type LucideIcon } from 'lucide-react'
+import { trackEvent } from '../lib/consent'
+import { useApp } from '../state/AppContext'
+import AddExpenseSheet from './AddExpenseSheet'
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 import Logo from './Logo'
 import Raccoon from './Raccoon'
 import Reminders from './Reminders'
@@ -22,7 +31,10 @@ const PURCHASE: NavItem = { to: '/purchase', label: 'Покупка', icon: Shop
 const CASHBACK: NavItem = { to: '/cashback', label: 'Кэшбэк', icon: BadgePercent }
 const CHAT: NavItem = { to: '/chat', label: 'Енот', icon: MessageCircle }
 const PROFILE: NavItem = { to: '/settings', label: 'Профиль', icon: UserRound }
+<<<<<<< HEAD
 const ADMIN: NavItem = { to: '/admin', label: 'Админ', icon: Shield }
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 
 /**
  * Каркас приложения. Телефон: верхняя строка с профилем и нижнее меню с жёлтой кнопкой «+».
@@ -31,9 +43,13 @@ const ADMIN: NavItem = { to: '/admin', label: 'Админ', icon: Shield }
 export default function Layout() {
   const { me, openExpenseSheet } = useApp()
   const location = useLocation()
+<<<<<<< HEAD
   const [feedbackOpen, setFeedbackOpen] = useState(false)
   const initial = (me?.user.name ?? '?').trim().charAt(0).toUpperCase()
   const nav = me?.user.is_admin ? [HOME, OPERATIONS, PURCHASE, CASHBACK, CHAT, PROFILE, ADMIN] : [HOME, OPERATIONS, PURCHASE, CASHBACK, CHAT, PROFILE]
+=======
+  const initial = (me?.user.name ?? '?').trim().charAt(0).toUpperCase()
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 
   useEffect(() => {
     trackEvent(`screen:${location.pathname}`)
@@ -55,7 +71,11 @@ export default function Layout() {
           Добавить трату
         </button>
         <nav aria-label="Основное меню" className="flex flex-col gap-1">
+<<<<<<< HEAD
           {[...nav].map((item) => (
+=======
+          {[HOME, OPERATIONS, PURCHASE, CASHBACK, CHAT, PROFILE].map((item) => (
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
             <NavLink
               key={item.to}
               to={item.to}
@@ -68,6 +88,7 @@ export default function Layout() {
             </NavLink>
           ))}
         </nav>
+<<<<<<< HEAD
         <div className="mt-auto flex flex-col gap-3 rounded-2xl bg-chip p-3">
           <div className="flex items-center gap-3">
             <Raccoon pose="calm" size={44} />
@@ -80,12 +101,21 @@ export default function Layout() {
           >
             Обратная связь
           </button>
+=======
+        <div className="mt-auto flex items-center gap-3 rounded-2xl bg-chip p-3">
+          <Raccoon pose="calm" size={44} />
+          <p className="text-sm text-muted">Енот считает, ты решаешь. Советы — ориентир, а не рекомендация.</p>
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
         </div>
       </aside>
 
       {/* Верхняя строка — телефон */}
       <header className="sticky top-0 z-20 flex items-center justify-between bg-page px-4 pt-3 pb-2 lg:hidden">
+<<<<<<< HEAD
         <Link to="/dashboard" aria-label="Енотономика — на главную">
+=======
+        <Link to="/dashboard" aria-label="Лимит+ — на главную">
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
           <Logo />
         </Link>
         <NavLink
@@ -100,6 +130,7 @@ export default function Layout() {
       <div className="lg:pl-64">
         <main className="mx-auto w-full max-w-md px-4 pt-2 pb-28 sm:max-w-2xl lg:max-w-6xl lg:px-10 lg:pt-8 lg:pb-12">
           <Outlet />
+<<<<<<< HEAD
           <div className="mt-8 flex flex-col gap-3 rounded-2xl bg-chip p-4 lg:hidden">
             <p className="text-sm text-muted">Енот считает, ты решаешь. Советы — ориентир, а не рекомендация.</p>
             <button
@@ -110,6 +141,8 @@ export default function Layout() {
               Обратная связь
             </button>
           </div>
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
         </main>
       </div>
 
@@ -133,7 +166,10 @@ export default function Layout() {
       </nav>
 
       <AddExpenseSheet />
+<<<<<<< HEAD
       <FeedbackDialog open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
       <Reminders />
       <Toasts />
     </div>

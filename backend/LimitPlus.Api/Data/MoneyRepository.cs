@@ -1,5 +1,8 @@
 using Dapper;
+<<<<<<< HEAD
 using LimitPlus.Api.Logic;
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
 using Npgsql;
 
 namespace LimitPlus.Api.Data;
@@ -86,6 +89,7 @@ public class MoneyRepository
             ORDER BY o.date DESC, o.created_at DESC
             """,
             new { UserId = userId, From = from, To = to });
+<<<<<<< HEAD
         List<OperationRow> list = rows.ToList();
         List<OperationRow> redacted = list.Where(BankOperationMapper.RedactStored).ToList();
         if (redacted.Count > 0)
@@ -100,6 +104,9 @@ public class MoneyRepository
         }
 
         return list;
+=======
+        return rows.ToList();
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     }
 
     /// <summary>

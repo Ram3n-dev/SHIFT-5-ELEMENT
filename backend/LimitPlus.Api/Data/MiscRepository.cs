@@ -55,6 +55,7 @@ public class MiscRepository
             new { UserId = userId, Date = date });
     }
 
+<<<<<<< HEAD
     public const string LlmPromptKey = "llm_system_prompt";
 
     public async Task<string?> GetSettingAsync(string key)
@@ -90,6 +91,8 @@ public class MiscRepository
             new { UserId = userId, Rating = rating, Text = text });
     }
 
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     public async Task MarkSentAsync(Guid userId, string key, DateOnly date)
     {
         await using NpgsqlConnection connection = await _db.OpenConnectionAsync();

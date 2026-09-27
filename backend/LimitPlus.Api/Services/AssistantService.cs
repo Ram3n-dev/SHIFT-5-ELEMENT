@@ -14,8 +14,13 @@ public class AssistantService
 {
     private const int HistoryForModel = 6;
 
+<<<<<<< HEAD
     public const string DefaultSystemPrompt =
         "Ты — Енот, дружелюбный помощник приложения Енотономика. Помогаешь студенту дотянуть до стипендии. " +
+=======
+    private const string SystemPrompt =
+        "Ты — Енот, дружелюбный помощник приложения Лимит+. Помогаешь студенту дотянуть до стипендии. " +
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
         "Отвечай по-русски, на «ты», коротко: несколько предложений, без markdown и списков. " +
         "Используй только числа из фактов, черновика и вопроса. Ничего не считай сам и не придумывай новых чисел. " +
         "Не советуй кредиты, займы, рассрочку, инвестиции, вклады и другие банковские продукты. " +
@@ -25,18 +30,28 @@ public class AssistantService
     private readonly UserStateService _states;
     private readonly CashbackService _cashback;
     private readonly ChatRepository _chat;
+<<<<<<< HEAD
     private readonly MiscRepository _settings;
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     private readonly LlmClient _llm;
     private readonly ILogger<AssistantService> _logger;
 
     public AssistantService(
+<<<<<<< HEAD
         UserStateService states, CashbackService cashback, ChatRepository chat, MiscRepository settings,
         LlmClient llm, ILogger<AssistantService> logger)
+=======
+        UserStateService states, CashbackService cashback, ChatRepository chat, LlmClient llm, ILogger<AssistantService> logger)
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
     {
         _states = states;
         _cashback = cashback;
         _chat = chat;
+<<<<<<< HEAD
         _settings = settings;
+=======
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
         _llm = llm;
         _logger = logger;
     }
@@ -92,8 +107,12 @@ public class AssistantService
             try
             {
                 // Без отмены по уходу со страницы: ответ сохранится в историю, и Енот покажет его в следующий раз.
+<<<<<<< HEAD
                 string? rewritten = await _llm.CompleteAsync(
                     await BuildMessagesAsync(factsText, history, question, template), CancellationToken.None);
+=======
+                string? rewritten = await _llm.CompleteAsync(BuildMessages(factsText, history, question, template), CancellationToken.None);
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
                 if (rewritten is not null && ExplanationGuard.IsAcceptable(rewritten, $"{factsText}\n{template}\n{question}"))
                 {
                     answer = rewritten;
@@ -114,6 +133,7 @@ public class AssistantService
         return await _chat.AddAsync(userId, "assistant", answer, source);
     }
 
+<<<<<<< HEAD
     private async Task<List<ChatTurn>> BuildMessagesAsync(string facts, List<ChatMessageRow> history, string question, string template)
     {
         string? custom = await _settings.GetSettingAsync(MiscRepository.LlmPromptKey);
@@ -122,6 +142,14 @@ public class AssistantService
         messages.AddRange(history.Select(m => new ChatTurn(m.Role, m.Text)));
         messages.Add(new ChatTurn("system",
             $"Черновик ответа по расчёту Енотономика (перескажи своими словами, числа не меняй):\n{template}"));
+=======
+    private static List<ChatTurn> BuildMessages(string facts, List<ChatMessageRow> history, string question, string template)
+    {
+        var messages = new List<ChatTurn> { new("system", $"{SystemPrompt}\n\nФакты:\n{facts}") };
+        messages.AddRange(history.Select(m => new ChatTurn(m.Role, m.Text)));
+        messages.Add(new ChatTurn("system",
+            $"Черновик ответа по расчёту Лимит+ (перескажи своими словами, числа не меняй):\n{template}"));
+>>>>>>> 2a9bed3edaa6bb9061576cf6c56bacea1d84cc88
         messages.Add(new ChatTurn("user", question));
         return messages;
     }
